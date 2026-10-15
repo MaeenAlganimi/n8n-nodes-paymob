@@ -1,0 +1,95 @@
+{
+	"name": "Paymob: Create payment intention",
+	"active": false,
+	"nodes": [
+		{
+			"parameters": {},
+			"id": "8a1c2d10-6b4e-4f1a-9c3d-1a2b3c4d5e01",
+			"name": "Manual Trigger",
+			"type": "n8n-nodes-base.manualTrigger",
+			"typeVersion": 1,
+			"position": [0, 0]
+		},
+		{
+			"parameters": {
+				"content": "## Create a Paymob intention\nAmounts are minor units. Item amounts must add up to the total. Add your Paymob public key under Additional Fields if you want a Unified Checkout URL in the output.",
+				"height": 220,
+				"width": 360
+			},
+			"id": "8a1c2d10-6b4e-4f1a-9c3d-1a2b3c4d5e02",
+			"name": "Note",
+			"type": "n8n-nodes-base.stickyNote",
+			"typeVersion": 1,
+			"position": [-20, -260]
+		},
+		{
+			"parameters": {
+				"operation": "createIntention",
+				"amount": 15000,
+				"currency": "EGP",
+				"paymentMethods": "158, card",
+				"specialReference": "order-1001",
+				"items": {
+					"item": [
+						{
+							"name": "Ceramic pour-over kit",
+							"amount": 15000,
+							"description": "Handmade ceramic dripper",
+							"quantity": 1
+						}
+					]
+				},
+				"firstName": "Layla",
+				"lastName": "Hassan",
+				"email": "customer@example.com",
+				"phoneNumber": "+201000000000",
+				"additionalBilling": {
+					"apartment": "12",
+					"building": "4",
+					"city": "Cairo",
+					"country": "EG",
+					"floor": "3",
+					"state": "Cairo",
+					"street": "Tahrir Square"
+				},
+				"additionalFields": {
+					"expiration": 3600,
+					"notificationUrl": "https://example.com/paymob/webhook",
+					"redirectionUrl": "https://example.com/orders/1001/return"
+				}
+			},
+			"id": "8a1c2d10-6b4e-4f1a-9c3d-1a2b3c4d5e03",
+			"name": "Create payment intention",
+			"type": "n8n-nodes-paymob.paymob",
+			"typeVersion": 1,
+			"position": [280, 0],
+			"credentials": {
+				"paymobApi": {
+					"id": "replace-with-your-credential",
+					"name": "Paymob account"
+				}
+			}
+		}
+	],
+	"connections": {
+		"Manual Trigger": {
+			"main": [
+				[
+					{
+						"node": "Create payment intention",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		}
+	},
+	"pinData": {},
+	"settings": {
+		"executionOrder": "v1"
+	},
+	"meta": {
+		"templateCredsSetupCompleted": false
+	},
+	"tags": []
+}

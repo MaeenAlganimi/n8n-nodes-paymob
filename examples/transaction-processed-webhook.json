@@ -1,0 +1,94 @@
+{
+	"name": "Paymob: Transaction processed webhook",
+	"active": false,
+	"nodes": [
+		{
+			"parameters": {
+				"content": "## Verified callbacks only\nPaste the production webhook URL into the intention notification URL or the Paymob transaction callback setting. The trigger rejects missing or tampered HMAC signatures. This example keeps successful payments only.",
+				"height": 220,
+				"width": 400
+			},
+			"id": "6c3e4f32-8d60-4b3c-9e5f-3c4d5e6f7001",
+			"name": "Note",
+			"type": "n8n-nodes-base.stickyNote",
+			"typeVersion": 1,
+			"position": [-20, -260]
+		},
+		{
+			"parameters": {
+				"events": "success",
+				"path": "paymob"
+			},
+			"id": "6c3e4f32-8d60-4b3c-9e5f-3c4d5e6f7002",
+			"name": "Paymob transaction callback",
+			"type": "n8n-nodes-paymob.paymobTrigger",
+			"typeVersion": 1,
+			"position": [0, 0],
+			"credentials": {
+				"paymobApi": {
+					"id": "replace-with-your-credential",
+					"name": "Paymob account"
+				}
+			}
+		},
+		{
+			"parameters": {
+				"assignments": {
+					"assignments": [
+						{
+							"id": "txn-id",
+							"name": "transactionId",
+							"value": "={{ $json.transactionId }}",
+							"type": "number"
+						},
+						{
+							"id": "order-id",
+							"name": "orderId",
+							"value": "={{ $json.orderId }}",
+							"type": "number"
+						},
+						{
+							"id": "amount",
+							"name": "amountCents",
+							"value": "={{ $json.amountCents }}",
+							"type": "number"
+						},
+						{
+							"id": "paid",
+							"name": "success",
+							"value": "={{ $json.success }}",
+							"type": "boolean"
+						}
+					]
+				},
+				"options": {}
+			},
+			"id": "6c3e4f32-8d60-4b3c-9e5f-3c4d5e6f7003",
+			"name": "Keep transaction summary",
+			"type": "n8n-nodes-base.set",
+			"typeVersion": 3.4,
+			"position": [300, 0]
+		}
+	],
+	"connections": {
+		"Paymob transaction callback": {
+			"main": [
+				[
+					{
+						"node": "Keep transaction summary",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		}
+	},
+	"pinData": {},
+	"settings": {
+		"executionOrder": "v1"
+	},
+	"meta": {
+		"templateCredsSetupCompleted": false
+	},
+	"tags": []
+}
